@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security" layout:decorator="layout/mainAdmin.html">
+    <div layout:fragment="mainContainerAdmin">
+            <form th:action="@{'/addbook'}" method="post">
+                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                     aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-body">
+                                <div class="form-group">
+                                    <label>NAME BOOK</label>
+                                    <input type="text" class="form-control" name="name">
+                                </div>
+                                <div class="form-group">
+                                    <label>PRICE</label>
+                                    <input type="number" class="form-control" name="price">
+                                </div>
+                                <div class="form-group">
+                                    <label>GENRE</label>
+                                    <select class="form-control" name="genre">
+                                        <option>DRAMA</option>
+                                        <option>LITERATURE</option>
+                                        <option>SCIENTIFIC</option>
+                                        <option>MOTIVATION</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Image</label>
+                                    <input type="text" class="form-control" name="image">
+                                </div>
+                                <div class="form-group">
+                                    <label>BOOK DESCRIPTION</label>
+                                    <input type="text" class="form-control" name="description">
+                                </div>
+                                <div class="form-group">
+                                    <label>AUTHOR</label>
+                                    <input type="text" class="form-control" name="author">
+                                </div>
+                                <div class="form-group">
+                                    <label>COUNTRY</label>
+                                    <select name="country_id" class="form-control">
+                                        <option th:value="${country.id}" th:each="country:${allCountries}"
+                                                th:text="${country.name}"></option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-success">ADD</button>
+                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">CANCEL</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <div class="card">
+                <div class="card-header" style="display: flex">
+                    <label style="margin-top: 5px;width: 89%">List of all Books</label>
+                    <a type="button" class="btn btn-sm btn-info" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                        Add Books
+                    </a>
+                </div>
+            </div>
+            <table class="table table-hover text-center">
+                <thead>
+                <tr>
+                    <th scope="col">Name</th>
+                    <th scope="col">Author</th>
+                    <th scope="col">Price</th>
+                </tr>
+                </thead>
+                <tbody th:each="book:${allBooks}">
+                <tr>
+                    <td th:text="${book.name}"></td>
+                    <td th:text="${book.author}"></td>
+                    <td th:text="${book.price}"></td>
+                    <td class="float-right mr-5">
+                            <a th:href="@{'editbook/'+${book.getId()}}" class="btn">
+                                <button type="button" class="btn btn-success">EDIT</button>
+                            </a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+</html>

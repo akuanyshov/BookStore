@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorator="layout/main.html">
+<head>
+    <title>Edit Book</title>
+    <link rel="stylesheet" type="text/css" href="/target/classes/static/css/bookdetails.css"/>
+</head>
+<div layout:fragment="mainContainer">
+    <div class="row">
+        <div class="col-sm-10 mt-5 offset-1">
+            <form th:action="@{'/editbook'}" method="post">
+                <input type="hidden" name="id" th:value="${book.id}">
+                <div class="form-group">
+                    <label>NAME BOOK</label>
+                    <input type="text" class="form-control" name="name" th:value="${book.name}">
+                </div>
+                <div class="form-group">
+                    <label>PRICE</label>
+                    <input type="number" class="form-control" name="price" th:value="${book.price}">
+                </div>
+                <div class="form-group">
+                    <label>GENRE</label>
+                    <select class="form-control" name="genre" th:value="${book.price}">
+                        <option>DRAMA</option>
+                        <option>LITERATURE</option>
+                        <option>SCIENTIFIC</option>
+                        <option>MOTIVATION</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Image</label>
+                    <input type="text" class="form-control" name="image" th:value="${book.image}">
+                </div>
+                <div class="form-group">
+                    <label>BOOK DESCRIPTION</label>
+                    <input type="text" class="form-control" name="description" th:value="${book.description}">
+                </div>
+                <div class="form-group">
+                    <label>AUTHOR</label>
+                    <input type="text" class="form-control" name="author" th:value="${book.author}">
+                </div>
+                <div class="form-group">
+                    <label>COUNTRY</label>
+                    <select name="country_id" class="form-control">
+                        <option th:selected="${cs==book.getCountry()}" th:each="cs:${allCountries}" th:value="${cs.getId()}" th:text="${cs.getName()}"></option>
+                    </select>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success">EDIT</button>
+                    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#exampleModal">DELETE</button>
+                    <button type="button" class="btn btn-warning" data-bs-dismiss="modal">CANCEL</button>
+                </div>
+            </form>
+
+            <form th:action="@{'/deletebook'}" method="post" id="deleteModal">
+                <input type="hidden" name="id" th:value="${book.getId()}">
+                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                     aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">DELETE</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                Are you sure?
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">NO</button>
+                                <button type="submit" class="btn btn-danger">YES</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</html>

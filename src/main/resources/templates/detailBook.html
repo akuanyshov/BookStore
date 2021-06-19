@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.uz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorator="layout/mainStart.html">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" type="text/css" th:href="@{'/css/cinemadetails.css'}">
+</head>
+<div layout:fragment="mainContainer">
+    <div>
+        <div class="container pb-5">
+            <div class="row mt-5">
+                <div class="col-sm-3">
+                    <img th:src="${book.image}" class="card-img-top">
+                    <div style="margin-top: 10px; margin-bottom: 15px;">
+                        <button type="button" class="btn btn-info form-control" style="color: white">Read about Book
+                        </button>
+
+                        <form th:action="@{'/addToBasketBook'}" method="post">
+                            <input type="hidden" name="book_id" th:value="${book.getId()}">
+                            <button class="btn btn-success mt-4" style="width: 300px"><i class="fas fa-shopping-basket"></i>Add To Basket</button>
+                        </form>
+
+                    </div>
+                    <div class="list-group">
+                        <a href="#" class="list-group-item list-group-item-action">
+                            <div>
+                                <label style="font-size: 13px">Type :</label>
+                                <br>
+                                <label>Book</label>
+                            </div>
+                        </a>
+                        <a href="#" class="list-group-item list-group-item-action">
+                            <div>
+                                <label style="font-size: 13px">Genre :</label>
+                                <br>
+                                <label th:text="${book.genre}"></label>
+                            </div>
+                        </a>
+                        <a href="#" class="list-group-item list-group-item-action">
+                            <div>
+                                <label style="font-size: 13px">Author :</label>
+                                <br>
+                                <label th:text="${book.author}"></label>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-sm-8" style="background-color: white; margin-left: 50px;border-radius: 2px">
+                    <div class="alert" style="margin-left: -15px;border-radius: 2px">
+                        <h4 style="font-family: Consolas" th:text="${book.name}"></h4>
+                    </div>
+                    <div style="margin-top: -42px">
+                        <div style="width: 840px;">
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="card mt-3 tab-card">
+                                        <div class="card-header tab-card-header">
+                                            <ul class="nav nav-tabs card-header-tabs" id="myTab" role="tablist">
+                                                <li class="nav-item">
+                                                    <a class="nav-link" id="one-tab" data-toggle="tab" href="#one"
+                                                       role="tab" aria-controls="One"
+                                                       aria-selected="true">Information</a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a class="nav-link" id="three-tab" data-toggle="tab" href="#three"
+                                                       role="tab" aria-controls="Three"
+                                                       aria-selected="false">Comments</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+
+                                        <div class="tab-content" id="myTabContent">
+                                            <div class="tab-pane fade show active p-3" id="one" role="tabpanel"
+                                                 aria-labelledby="one-tab">
+                                                <p class="card-text" th:text="${book.description}"></p>
+                                                <a href="#" class="btn btn-light btn-sm" th:text="${book.genre}"></a>
+                                            </div>
+                                            <div class="tab-pane fade p-3" id="three" role="tabpanel"
+                                                 aria-labelledby="three-tab">
+                                                <h5 class="card-title">Comments</h5>
+                                                <p class="card-text">
+                                                <div class="mt-5">
+                                                    <div class="row">
+                                                        <div class="col-12" sec:authorize="isAuthenticated()">
+                                                            <form th:action="@{'/addCommentBook'}" method="post">
+                                                                <input type="hidden" name="user_id" th:if="${currentUser!=null}" th:value="${currentUser.getId()}">
+                                                                <input type="hidden" name="book_id" th:value="${book.id}">
+                                                                <textarea class="form-control" name="comment" rows="3" required></textarea>
+                                                                <button class="btn btn-primary float-right mt-3"><i class="fas fa-comments mr-1"></i><span>ADD COMMENT</span>
+                                                                </button>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="mt-5" th:if="${comments.size()>0}">
+                                                    <div class="row">
+                                                        <div class="col-12">
+                                                            <div class="card mt-3" th:each="com: ${comments}">
+                                                                <div class="card-body">
+                                                                    <div class="row">
+                                                                        <div class="col-6">
+                                                                            <strong><h6 class="card-title" th:text="${com.author.fullName}"></h6></strong>
+                                                                            <p class="card-text" id="commentsF" th:text="${com.comment}"></p>
+                                                                        </div>
+                                                                        <div class="col-6 " style="display: flex; flex-direction: column">
+                                                                            <div class="row">
+                                                                                <div class="col-12 float-right">
+                                                                                    <h6 class="float-right" th:text="${com.addedDate}"></h6>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="row float-right" sec:authorize="isAuthenticated()">
+                                                                                <div class="col-sm-12 modal-footer"
+                                                                                     th:if="${(com.author.id==currentUser.id)}">
+                                                                                    <button class="btn btn-dark"
+                                                                                            th:onclick="javascript:editCommentBook([[${com.comment}]],[[${com.id}]])"><i
+                                                                                            class="fas fa-edit"></i></button>
+                                                                                    <form th:action="@{'/deleteCommentBook'}" method="post">
+                                                                                        <input type="hidden" name="comment_id" th:value="${com.id}">
+                                                                                        <input type="hidden" name="book_id" th:value="${book.id}">
+                                                                                        <button class="btn btn-danger"><i class="fas fa-trash-alt"></i></button>
+                                                                                    </form>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <script th:inline="javascript">
+                                                    function editCommentBook(co,ids) {
+                                                        document.getElementById("editComId").value = co;
+                                                        document.getElementById("idForm").value = ids;
+                                                        $("#exampleModal").modal('show');
+                                                    }
+                                                </script>
+                                                <form th:action="@{'/editCommentBook'}" method="post">
+                                                    <input type="hidden" name="comment_id" id="idForm">
+                                                    <input type="hidden" name="book_id" th:value="${book.id}">
+                                                    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                        <div class="modal-dialog">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                        <span aria-hidden="true">&times;</span>
+                                                                    </button>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    <div class="form-group">
+                                                                        <input type="text" class="form-control" id="editComId" name="comment" value="">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                                    <button type="submit" class="btn btn-success">Save</button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</html>

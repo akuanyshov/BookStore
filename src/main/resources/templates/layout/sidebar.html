@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th = "http://www.thymeleaf.org"
+      xmlns:layout = "http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+    <head>
+        <meta charset="UTF-8">
+        <title>Title</title>
+        <link rel="stylesheet" type="text/css" th:href="@{'/css/bootstrap.css'}">
+        <script type="text/javascript" th:src="@{'/js/bootstrap.js'}"></script>
+        <script type="text/javascript" th:src="@{'/js/jquery-3.5.1.min.js'}"></script>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
+    </head>
+    <div class="list-group">
+        <a th:href="@{'/admin'}" class="list-group-item list-group-item-action" aria-current="true">
+            Books
+        </a>
+        <a th:href="@{'/schoolsuplies'}" class="list-group-item list-group-item-action">
+            School Supplies
+        </a>
+        <a th:href="@{'/art'}" class="list-group-item list-group-item-action" aria-current="true">
+            Art
+        </a>
+        <a th:href="@{'/adminRoles'}" class="list-group-item list-group-item-action">Roles</a>
+        <a th:href="@{'/adminUsers'}" class="list-group-item list-group-item-action" sec:authorize="hasAnyRole('ROLE_ADMIN')">Users</a>
+    </div>
+    <script src='https://kit.fontawesome.com/a076d05399.js'></script>
+    <link href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css" rel="stylesheet"
+          crossorigin="anonymous"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/js/all.min.js"
+            crossorigin="anonymous"></script>
+    <script type="text/javascript" th:src="@{'/js/jquery-3.5.1.min.js'}"></script>
+    <script type="text/javascript" th:src="@{'/js/bootstrap.min.js'}"></script>
+</html>

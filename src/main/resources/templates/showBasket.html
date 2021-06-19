@@ -1,0 +1,191 @@
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.uz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorator="layout/main.html">
+<div layout:fragment="mainContainer">
+    <div class="row mt-2">
+        <div class="col-10">
+            <div>
+                <div class="form-inline">
+                    <div style="font-weight: bold"><h5 th:text="#{label.total}"> $ </h5></div>
+                    <h5>
+                        <div th:text="${total}"></div>
+                    </h5>
+                    <div class="ml-auto">
+                        <button type="button" class="btn btn-success" data-toggle="modal"
+                                data-target="#exampleModal" th:text="#{button.checkIn}">
+                            <i class="fas fa-money-check"></i>
+                        </button>
+                        <button type="button" onclick="deleteBlog()" class="btn btn-danger" th:text="#{button.clearbasket}"><i
+                                class="fas fa-trash-alt"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <h1 th:text="#{label.books}"></h1>
+            <table class="table table-dark mt-3">
+                <thead class="mt-3">
+                <tr>
+                    <th th:text="#{label.items}"></th>
+                    <th th:text="#{label.price}"></th>
+                    <th th:text="#{label.amount}"></th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody th:each="bas:${basket}">
+                <tr th:if="${bas.getBook()!=null}">
+                    <td th:text="${bas.getBook()!=null ? bas.getBook().name:''}"></td>
+                    <td th:text="${bas.getBook()!=null? bas.getBook().price:''}"></td>
+                    <td th:text="${bas.getBook()!=null ? bas.getAmount():''}"></td>
+                    <div class="modal-footer">
+                        <td>
+                            <form th:action="@{'/increaseBook'}" method="post">
+                                <input type="hidden" name="book_id" th:value="${bas.getBook()!=null ? bas.getBook().getId():''}">
+                                <button class="btn btn-success">+</button>
+                            </form>
+                        </td>
+                        <td>
+                            <form th:action="@{'/decreaseBook'}" method="post">
+                                <input type="hidden" name="book_id" th:value="${bas.getBook()!=null ? bas.getBook().getId():''}">
+                                <button class="btn btn-danger mr-3">-</button>
+                            </form>
+                        </td>
+                    </div>
+                </tr>
+                </tbody>
+            </table>
+            <h1 th:text="#{label.art}"></h1>
+            <table class="table table-dark mt-3">
+                <thead class="mt-3">
+                <tr>
+                    <th th:text="#{label.items}"></th>
+                    <th th:text="#{label.price}"></th>
+                    <th th:text="#{label.amount}"></th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody th:each="bas:${basket}">
+                <tr th:if="${bas.getArt()!=null}">
+                    <td th:text="${bas.getArt()!=null ? bas.getArt().name:''}"></td>
+                    <td th:text="${bas.getArt()!=null? bas.getArt().price:''}"></td>
+                    <td th:text="${bas.getArt()!=null ? bas.getAmount():''}"></td>
+                    <div class="modal-footer">
+                        <td>
+                            <form th:action="@{'/increaseArt'}" method="post">
+                                <input type="hidden" name="art_id" th:value="${bas.getArt()!=null ? bas.getArt().getId():''}">
+                                <button class="btn btn-success">+</button>
+                            </form>
+                        </td>
+                        <td>
+                            <form th:action="@{'/decreaseArt'}" method="post">
+                                <input type="hidden" name="art_id" th:value="${bas.getArt()!=null ? bas.getArt().getId():''}">
+                                <button class="btn btn-danger mr-3">-</button>
+                            </form>
+                        </td>
+                    </div>
+                </tr>
+                </tbody>
+            </table>
+            <h1 th:text="#{label.school}"></h1>
+            <table class="table table-dark mt-3">
+                <thead class="mt-3">
+                <tr>
+                    <th th:text="#{label.items}"></th>
+                    <th th:text="#{label.price}"></th>
+                    <th th:text="#{label.amount}"></th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody th:each="bas:${basket}">
+                <tr th:if="${bas.getSchoolSupplies()!=null}">
+                    <td th:text="${bas.getSchoolSupplies()!=null ? bas.getSchoolSupplies().name:''}"></td>
+                    <td th:text="${bas.getSchoolSupplies()!=null? bas.getSchoolSupplies().price:''}"></td>
+                    <td th:text="${bas.getSchoolSupplies()!=null ? bas.getAmount():''}"></td>
+                    <div class="modal-footer">
+                        <td>
+                            <form th:action="@{'/increaseSchoolSupplies'}" method="post">
+                                <input type="hidden" name="schoolSupplies_id" th:value="${bas.getSchoolSupplies()!=null ? bas.getSchoolSupplies().getId():''}">
+                                <button class="btn btn-success">+</button>
+                            </form>
+                        </td>
+                        <td>
+                            <form th:action="@{'/decreaseSchoolSupplies'}" method="post">
+                                <input type="hidden" name="schoolSupplies_id" th:value="${bas.getSchoolSupplies()!=null ? bas.getSchoolSupplies().getId():''}">
+                                <button class="btn btn-danger mr-3">-</button>
+                            </form>
+                        </td>
+                    </div>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <form th:action="@{'/clearBasket'}" method="post" id="deleteBlogFormId">
+    </form>
+
+    <script type="text/javascript">
+        function deleteBlog() {
+            conf = confirm("Are you sure?");
+            if (conf) {
+                document.getElementById("deleteBlogFormId").submit();
+            }
+        }
+    </script>
+    <form th:action="@{'/checkIn'}" method="post">
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <div class="modal-title" id="exampleModalLabel">
+                            <div class="row">
+                                <div class="col-sm-2 text-center">
+                                    <i class="fab fa-cc-apple-pay" style="font-size: 2.5em;"></i>
+                                </div>
+                                <div class="col-sm-2 text-center">
+                                    <i class="fab fa-cc-amazon-pay " style="font-size: 2.5em;"></i>
+                                </div>
+                                <div class="col-sm-2 text-center">
+                                    <i class="fab fa-cc-amex" style="font-size: 2.5em;"></i>
+                                </div>
+                                <div class="col-sm-2 text-center">
+                                    <i class="fab fa-cc-mastercard" style="font-size: 2.5em;"></i>
+                                </div>
+                                <div class="col-sm-2 text-center">
+                                    <i class="fab fa-cc-visa" style="font-size: 2.5em;"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label>Full Name</label>
+                            <input type="text" name="full_name" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label>Card Number</label>
+                            <input type="text" name="card" class="form-control">
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Expiration (MM/YY) </label>
+                                <input type="text" name="expiration" class="form-control">
+                            </div>
+                            <div class="form-group ml-auto">
+                                <label>CVV</label>
+                                <input type="text" name="cvv"  class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-success">Pay</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+</html>

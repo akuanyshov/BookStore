@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.uz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorator="layout/mainStart.html">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" type="text/css" th:href="@{'/signIn/registration1.css'}">
+</head>
+<body>
+<div class="row" layout:fragment="mainContainer">
+    <div class="wrapper fadeInDown">
+        <div id="formContent">
+            <!-- Tabs Titles -->
+            <h2 class="active" th:text="#{label.signin}"></h2>
+
+<!--            &lt;!&ndash; Icon &ndash;&gt;-->
+<!--            <div class="fadeIn first">-->
+<!--                <img src="http://danielzawadzki.com/codepen/01/icon.svg" id="icon" alt="User Icon"/>-->
+<!--            </div>-->
+
+            <!-- Login Form -->
+            <form th:action="@{'/auth'}" method="post">
+                <input type="email" id="login" class="fadeIn second" name="user_email" th:placeholder="#{label.email}">
+                <input type="password" id="password" class="fadeIn third" name="user_password" th:placeholder="#{label.password}">
+                <input type="submit" class="fadeIn fourth" th:value="#{label.signin}">
+            </form>
+
+            <!-- Remind Passowrd -->
+            <div id="formFooter">
+                <a class="underlineHover" href="#" th:text="#{label.forgot}"></a>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!--<script type="text/javascript" th:src="@{'/signIn/registration.js'}"></script>-->
+</body>
+</html>
